@@ -20,7 +20,7 @@
 
 namespace can
 {
-    class CAN_node
+    class socket_can
     {
     private:
         ifreq interface_request_{};
@@ -30,8 +30,8 @@ namespace can
         int sock_fd_ = -1;
 
     public:
-        CAN_node() = default;
-        ~CAN_node();
+        socket_can() = default;
+        ~socket_can();
 
         /**
          * @brief 初始化SocketCAN
@@ -72,7 +72,7 @@ namespace can
 
 
 
-    CAN_node::~CAN_node()
+    socket_can::~socket_can()
     {
         if (this->isOpen())
         {
@@ -80,7 +80,7 @@ namespace can
         }
     }
 
-    bool CAN_node::open(const std::string& interface)
+    bool socket_can::open(const std::string& interface)
     {
         //创建socket关键字
         sock_fd_ = socket(PF_CAN, SOCK_RAW, CAN_RAW);
@@ -116,7 +116,7 @@ namespace can
         //return startReceiverThread();
     }
 
-    void CAN_node::close()
+    void socket_can::close()
     {
         //预留：等待关闭任务线程
         //code
@@ -130,12 +130,12 @@ namespace can
         sock_fd_ = -1;
     }
 
-    bool CAN_node::isOpen() const
+    bool socket_can::isOpen() const
     {
         return (sock_fd_ != -1);
     }
 
-    void CAN_node::write(can_frame* frame) const
+    void socket_can::write(can_frame* frame) const
     {
         if (!isOpen())
         {
