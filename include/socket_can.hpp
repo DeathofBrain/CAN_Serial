@@ -23,10 +23,13 @@ namespace can
     class socket_can
     {
     private:
+        //定义一个socket can通信的地址结构体
         ifreq interface_request_{};
+        //定义一个ifreq结构体，这个结构体用来配置和获取IP地址、掩码、MTU等接口信息的
         sockaddr_can address_{};
     
     public:
+        //socketCAN套接字
         int sock_fd_ = -1;
 
     public:
@@ -36,7 +39,7 @@ namespace can
         /**
          * @brief 初始化SocketCAN
          * 
-         * @param interface CAN设备名称
+         * @param interface CAN总线名称
          * @return true 成功初始化
          */
         bool open(const std::string& interface);
