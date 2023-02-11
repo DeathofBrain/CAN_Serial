@@ -1,1 +1,2 @@
 # CAN_Serial
+基于rm_control改写，分离出can通信功能用于调试
