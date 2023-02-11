@@ -53,7 +53,7 @@ namespace can
          * @param interface CAN总线名称
          * @return true 成功初始化
          */
-        bool open(const std::string& interface);
+        bool open(const std::string& interface, std::function<void(const can_frame& frame)> handler);
         /**
          * @brief 关闭并解绑socket
          * 
@@ -99,9 +99,9 @@ namespace can
         }
     }
 
-    bool socket_can::open(const std::string& interface)
+    bool socket_can::open(const std::string& interface, std::function<void(const can_frame& frame)> handler)
     {
-        
+        reception_handler = std::move(handler);
 
         //创建socket关键字
         sock_fd_ = socket(PF_CAN, SOCK_RAW, CAN_RAW);
@@ -133,10 +133,8 @@ namespace can
             close();
             return false;
         }
-        
-        return true;
         //为帧接收启动一个单独的事件驱动线程
-        //return startReceiverThread();
+        return startReceiverThread();
     }
 
     void socket_can::close()
@@ -192,7 +190,11 @@ namespace can
     }
 
 
-
+    /**
+     * @brief 监听socket，获取消息帧
+     * 
+     * @param argv 启动这个线程的socket_can指针
+     */
     static void socketcan_receiver_thread(socket_can* argv)
     {
         /**
