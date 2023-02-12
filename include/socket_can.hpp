@@ -140,7 +140,7 @@ namespace can
     void socket_can::close()
     {
         //等待关闭任务线程
-        terminate_receiver_thread = false;
+        terminate_receiver_thread = true;
         while (receiver_thread_running)
         {
             ;
