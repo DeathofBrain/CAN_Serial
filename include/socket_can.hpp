@@ -78,7 +78,7 @@ namespace can
     };
 
 
-
+    static void socketcan_receiver_thread(socket_can* argv);
 
 
 

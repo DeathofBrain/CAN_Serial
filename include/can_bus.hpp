@@ -66,7 +66,7 @@ namespace can
          * @brief 串口socket
          * 
          */
-        socket_can socket_can;
+        socket_can socket_can_;
         /**
          * @brief can帧缓冲区
          * 
@@ -96,7 +96,7 @@ namespace can
         : bus_name(bus_name)
     {
         //初始化can串口
-        while (!socket_can.open(bus_name, std::bind(can_bus::frame_call_back
+        while (!socket_can_.open(bus_name, std::bind(&can_bus::frame_call_back
                                                     ,this
                                                     ,std::placeholders::_1)))
         {
@@ -108,7 +108,7 @@ namespace can
 
     void can_bus::write(can_frame* frame)
     {
-        socket_can.write(frame);
+        socket_can_.write(frame);
     }
 
     void can_bus::write()
@@ -123,6 +123,7 @@ namespace can
         for (const auto& frame_stamp : read_buffer)
         {
             can_frame frame = frame_stamp.frame;
+            std::cout<<frame.can_dlc<<frame.can_id;
         }
         read_buffer.clear();
     }
