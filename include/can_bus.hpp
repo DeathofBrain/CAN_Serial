@@ -47,9 +47,9 @@ namespace can
         /**
          * @brief 从buffer中读取帧，并清空buffer
          * 
-         * @param time chrono时间戳，采用steady_clock时钟
+         * @param 
          */
-        void read(clock_stamp time);
+        void read();
         /**
          * @brief 当socket接收can帧时，自动调用此函数并将帧传入buffer
          * 
@@ -116,7 +116,7 @@ namespace can
         ;
     }
 
-    void can_bus::read(clock_stamp stamp)
+    void can_bus::read()
     {
         std::lock_guard<std::mutex> lg(_mutex);
         //读取can帧
